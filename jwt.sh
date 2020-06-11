@@ -58,7 +58,7 @@ base64_encode() {
 }
 
 json() {
-    jq -c .
+    jq -c . | tr -d '\n'
 }
 
 hmacsha256_sign() {
