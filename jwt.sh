@@ -36,20 +36,19 @@ fi
 # Static header fields.
 header='{
     "typ": "JWT",
-    "alg": "HS256",
-    "kid": "0001",
-    "iss": "jwt-generator"
+    "alg": "HS256"
 }'
 
 # Use jq to set the dynamic `iat` and `exp`
-# fields on the header using the current time.
+# fields on the payload using the current time.
 # `iat` is set to now, and `exp` is now + 1 hour.
-header=$(
-    echo "${header}" | jq --arg time_str "$(date +%s)" \
+payload=$(
+    echo "${payload}" | jq --arg time_str "$(date +%s)" \
     '
     ($time_str | tonumber) as $time_num
     | .iat=$time_num
     | .exp=($time_num + 3600)
+    | .iss="orrc/jwt-generator"
     '
 )
 
